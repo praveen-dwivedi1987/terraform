@@ -36,6 +36,7 @@ resource "aws_instance" "jenkins-master" {
   
   tags = {
     Name = "jenkins_master_tf"
+    Type = "jenkins_master"
   }
   depends_on = [aws_main_route_table_association.set-master-default-rt-assoc]
 }
@@ -53,6 +54,7 @@ resource "aws_instance" "jenkins-worker-oregon" {
   tags = {
     Name              = join("_", ["jenkins_worker_tf", count.index + 1])
     Master_Private_IP = aws_instance.jenkins-master.private_ip
+    Type = "jenkins_worker"
   }
   depends_on = [aws_main_route_table_association.set-worker-default-rt-assoc]
 }
