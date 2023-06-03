@@ -21,7 +21,7 @@ resource "aws_lb_target_group" "jenkins-tg" {
   health_check {
     healthy_threshold   = 2
     interval            = 5
-    matcher             = "200-299, 400-499"
+    matcher             = "407"
     path                = "/"
     port                = 8080
     protocol            = "HTTP"
