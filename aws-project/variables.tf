@@ -37,3 +37,8 @@ variable "workers-count" {
   type    = number
   default = 1
 }
+
+varible "ansible_dir"{
+  type = string
+  default = "../ansible_files"
+}

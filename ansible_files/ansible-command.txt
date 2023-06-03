@@ -1,0 +1,1 @@
+ansible all  -i jenkins_master_aws_ec2.yml  -m ping --private-key=~/.ssh/id_rsa -u ec2-user

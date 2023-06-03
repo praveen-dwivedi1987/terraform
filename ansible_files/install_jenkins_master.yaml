@@ -1,0 +1,50 @@
+---
+- hosts: all
+  become: true
+  remote_user: ec2-user
+  tasks:
+   - name: install packeges
+     yum: 
+      name : "{{ item }}"
+      state: present
+     loop:
+      - wget
+      - git
+      - java-11-amazon-corretto
+     
+
+   - name: get jenkins repo
+     get_url:
+      url:  https://pkg.jenkins.io/redhat-stable/jenkins.repo
+      dest: /etc/yum.repos.d/jenkins.repo
+   
+   - name: import jenkins gpg key
+     shell: rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+   - name: Upgrade all packages
+     yum:
+      name: '*'
+      state: latest
+
+   - name: install jenkins
+     yum:
+      name: jenkins
+      state: present
+
+   - name: reload daemon
+     ansible.builtin.systemd:
+      daemon_reload: yes
+
+   - name: start service
+     service: 
+      name: jenkins
+      state: started
+
+   - name: get admin password
+     shell: 
+      cmd: cat /var/lib/jenkins/secrets/initialAdminPassword
+     register: adminpassword
+  
+   - name: echo admin password
+     debug:
+       msg : "admin password in {{ adminpassword }}  "

@@ -33,12 +33,17 @@ resource "aws_instance" "jenkins-master" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
   subnet_id                   = aws_subnet.subnet_1.id
-  
+
   tags = {
     Name = "jenkins_master_tf"
     Role = "jenkins_master"
   }
   depends_on = [aws_main_route_table_association.set-master-default-rt-assoc]
+
+  provisioner "local-exec" {
+        working_dir = var.ansible_dir
+        command = ["ansible-playbook -i jenkins_master_aws_ec2.yml install_jenkins_master.yaml --private-key=~/.ssh/id_rsa"]
+  }
 }
 
 #Create EC2 in us-west-2
@@ -54,7 +59,7 @@ resource "aws_instance" "jenkins-worker-oregon" {
   tags = {
     Name              = join("_", ["jenkins_worker_tf", count.index + 1])
     Master_Private_IP = aws_instance.jenkins-master.private_ip
-    Role = "jenkins_worker"
+    Role              = "jenkins_worker"
   }
   depends_on = [aws_main_route_table_association.set-worker-default-rt-assoc]
 }
