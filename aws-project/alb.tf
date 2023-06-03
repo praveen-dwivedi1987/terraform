@@ -1,4 +1,5 @@
 resource "aws_lb" "jenkins-lb" {
+  provider = aws.region-master
   name               = "jenkins-lb"
   internal           = false
   load_balancer_type = "application"
@@ -12,6 +13,7 @@ resource "aws_lb" "jenkins-lb" {
 
 
 resource "aws_lb_target_group" "jenkins-tg" {
+  provider = aws.region-master
   name     = "tf-example-lb-tg"
   port     = 8080
   protocol = "HTTP"
@@ -30,6 +32,7 @@ resource "aws_lb_target_group" "jenkins-tg" {
 }
 
 resource "aws_lb_listener" "alb_listener" {
+  provider = aws.region-master
   load_balancer_arn = aws_lb.jenkins-lb.arn
   port              = "80"
   protocol          = "HTTP"
@@ -41,6 +44,7 @@ resource "aws_lb_listener" "alb_listener" {
 }
 
 resource "aws_lb_target_group_attachment" "tg-attachment" {
+    provider = aws.region-master
   target_group_arn = aws_lb_target_group.jenkins-tg.arn
   target_id        = aws_instance.jenkins-master.id
   port             = 8080
