@@ -42,7 +42,7 @@ resource "aws_instance" "jenkins-master" {
 
   provisioner "local-exec" {
         working_dir = var.ansible_dir
-        command = ["ansible-playbook -i jenkins_master_aws_ec2.yml install_jenkins_master.yaml --private-key=~/.ssh/id_rsa"]
+        command = "ansible-playbook -i jenkins_master_aws_ec2.yml install_jenkins_master.yaml --private-key=~/.ssh/id_rsa"
   }
 }
 
