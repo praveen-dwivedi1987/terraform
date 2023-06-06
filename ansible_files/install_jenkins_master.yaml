@@ -35,6 +35,28 @@
      ansible.builtin.systemd:
       daemon_reload: yes
 
+
+   - name: load jenkins casc plugin
+     get_url: 
+        url: https://updates.jenkins.io/download/plugins/configuration-as-code/1647.ve39ca_b_829b_42/configuration-as-code.hpi
+        dest: /var/lib/jenkins/plugins/configuration-as-code.jpi
+        
+   - name:  change file permission of plugin
+     file: 
+       path: /var/lib/jenkins/plugins/configuration-as-code.jpi
+       owner: jenkins
+       group: jenkins
+       
+   - name: copy configuration file to location
+     ansible.builtin.copy:
+        src: ../jenkins-casc/jenkins.yaml
+        dest: /var/lib/jenkins/jenkins.yaml
+        owner: jenkins
+        group: jenkins
+    
+       
+     
+     
    - name: start service
      service: 
       name: jenkins
@@ -48,3 +70,5 @@
    - name: echo admin password
      debug:
        msg : "admin password in {{ adminpassword }}  "
+       
+   

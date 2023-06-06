@@ -1,0 +1,24 @@
+jenkins:
+  nodes:
+    - permanent:
+        labelString: "linux docker test"
+        mode: NORMAL
+        name: "utility-node"
+        remoteFS: "/home/ec2-user"
+        launcher:
+          inbound:
+            workDirSettings:
+              disabled: true
+              failIfWorkDirIsMissing: false
+              internalDir: "remoting"
+              workDirPath: "/tmp"
+  slaveAgentPort: Random
+  agentProtocols:
+    - "jnlp2"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+  authorizationStrategy: loggedInUsersCanDoAnything

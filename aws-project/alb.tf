@@ -20,7 +20,7 @@ resource "aws_lb_target_group" "jenkins-tg" {
   vpc_id   = aws_vpc.vpc_master.id
   health_check {
     healthy_threshold   = 2
-    interval            = 5
+   # interval            = 5
     matcher             = "407"
     path                = "/"
     port                = 8080
