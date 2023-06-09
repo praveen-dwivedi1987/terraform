@@ -1,0 +1,3 @@
+plugin download location
+
+https://updates.jenkins-ci.org/latest/

@@ -36,16 +36,38 @@
       daemon_reload: yes
 
 
-   - name: load jenkins casc plugin
-     get_url: 
-        url: https://updates.jenkins.io/download/plugins/configuration-as-code/1647.ve39ca_b_829b_42/configuration-as-code.hpi
-        dest: /var/lib/jenkins/plugins/configuration-as-code.jpi
+   - name: start service
+     service: 
+      name: jenkins
+      state: started
+
+   - name: get admin password
+     shell: 
+      cmd: cat /var/lib/jenkins/secrets/initialAdminPassword
+     register: adminpassword
+     
+   - name: stop jenkins
+     service: 
+      name: jenkins
+      state: stopped
+      
+   
+   # - name: load jenkins casc plugin
+     # ansible.builtin.copy: 
+        # src: ../plugins
+        # dest: /var/lib/jenkins/plugins
+        # owner: jenkins
+        # group: jenkins
         
-   - name:  change file permission of plugin
-     file: 
-       path: /var/lib/jenkins/plugins/configuration-as-code.jpi
-       owner: jenkins
-       group: jenkins
+  
+   - name: download jenkins plugin
+     get_url:
+        url: "{{ plugin_url }}{{ item }}.hpi"
+        dest: "/var/lib/jenkins/plugins/{{ item }}.jpi"
+     with_lines: cat /tmp/plugin_list.txt
+     vars:
+     - plugin_url: https://updates.jenkins-ci.org/latest/
+
        
    - name: copy configuration file to location
      ansible.builtin.copy:

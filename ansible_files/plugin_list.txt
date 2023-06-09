@@ -1,0 +1,8 @@
+caffeine-api
+commons-lang3-api
+commons-text-api
+configuration-as-code
+instance-identity
+javax-activation-api
+javax-mail-api
+snakeyaml-api
