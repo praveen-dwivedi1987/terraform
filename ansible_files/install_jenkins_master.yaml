@@ -64,7 +64,7 @@
      get_url:
         url: "{{ plugin_url }}{{ item }}.hpi"
         dest: "/var/lib/jenkins/plugins/{{ item }}.jpi"
-     with_lines: cat /tmp/plugin_list.txt
+     with_lines: cat plugin_list.txt
      vars:
      - plugin_url: https://updates.jenkins-ci.org/latest/
 
