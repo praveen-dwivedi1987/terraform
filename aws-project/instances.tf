@@ -56,10 +56,15 @@ resource "aws_instance" "jenkins-worker-oregon" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.jenkins-sg-oregon.id]
   subnet_id                   = aws_subnet.subnet_1_oregon.id
+  private_ip                  = var.worker-private-ip[count.index]
   tags = {
     Name              = join("_", ["jenkins_worker_tf", count.index + 1])
     Master_Private_IP = aws_instance.jenkins-master.private_ip
     Role              = "jenkins_worker"
   }
   depends_on = [aws_main_route_table_association.set-worker-default-rt-assoc]
+    provisioner "local-exec" {
+        working_dir = var.ansible_dir
+        command = "sleep 120; ansible-playbook -i jenkins_worker_aws_ec2.yml setup_jenkins_worker.yaml --private-key=~/.ssh/id_rsa"
+  }
 }

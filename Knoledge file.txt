@@ -1,3 +1,5 @@
 plugin download location
 
-https://updates.jenkins-ci.org/latest/
+https://updates.jenkins-ci.org/latest/email-ext.hpi
+
+https://updates.jenkins.io/download/plugins/bouncycastle-api/2.28/bouncycastle-api.hpi

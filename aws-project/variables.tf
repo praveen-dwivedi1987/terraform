@@ -38,6 +38,9 @@ variable "workers-count" {
   default = 1
 }
 
+variable worker-private-ip{
+  default = ["192.168.1.10"]
+}
 variable "ansible_dir"{
   type = string
   default = "../ansible_files"
