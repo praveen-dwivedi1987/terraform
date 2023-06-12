@@ -1,3 +1,17 @@
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          # Another option passing via a file via ${readFile:/path/to/file}
+          - basicSSHUserPrivateKey:
+              scope: SYSTEM
+              id: slave-ssh
+              username: ec2-user
+              description: "SSH passphrase with private key file. Private key provided"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${readFile:/tmp/id_rsa}" # Path to file loaded from Environment Variable
+
 jenkins:
   nodes:
     - permanent:
@@ -19,7 +33,7 @@ jenkins:
         numExecutors: 4
         remoteFS: "/home/ec2-user"
         launcher:
-          SSHLauncher:
+          ssh:
             host: "192.168.1.10"
             port: 22
             credentialsId: slave-ssh
@@ -29,7 +43,6 @@ jenkins:
             sshHostKeyVerificationStrategy:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
-				
   slaveAgentPort: Random
   agentProtocols:
     - "jnlp2"
@@ -40,17 +53,3 @@ jenkins:
         - id: "admin"
           password: "admin"
   authorizationStrategy: loggedInUsersCanDoAnything
-
-credentials:
-  system:
-    domainCredentials:
-      - credentials:
-          # Another option passing via a file via ${readFile:/path/to/file}
-          - basicSSHUserPrivateKey:
-              scope: SYSTEM
-              id: slave-ssh
-              username: ec2-user
-              description: "SSH passphrase with private key file. Private key provided"
-              privateKeySource:
-                directEntry:
-                  privateKey: "~/.ssh/id_rsa" # Path to file loaded from Environment Variable

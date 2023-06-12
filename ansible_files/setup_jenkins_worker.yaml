@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: true
+  remote_user: ec2-user
+  tasks:
+   - name: install packeges
+     yum: 
+      name : "{{ item }}"
+      state: present
+     loop:
+      - wget
+      - git
+      - java-11-amazon-corretto
+   - name: Upgrade all packages
+     yum:
+      name: '*'
+      state: latest

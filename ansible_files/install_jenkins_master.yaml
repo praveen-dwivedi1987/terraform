@@ -75,14 +75,26 @@
         dest: /var/lib/jenkins/jenkins.yaml
         owner: jenkins
         group: jenkins
+        
+   - name: copy private key file to jenkins master
+     ansible.builtin.copy:
+        src: ~/.ssh/id_rsa
+        dest: /tmp/id_rsa
+
     
-       
+   - name: increase timeout for jenkins service startup
+     lineinfile:
+         path: /usr/lib/systemd/system/jenkins.service
+         regexp: '^#TimeoutStartSec=90'
+         line: TimeoutStartSec=900    
      
      
    - name: start service
      service: 
       name: jenkins
       state: started
+     retries: 3
+     delay: 3
 
    - name: get admin password
      shell: 
